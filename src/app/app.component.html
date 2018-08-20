@@ -7,7 +7,14 @@
 </div>
 
 <div>
-  <p-button label="Random Forest" (onClick)="findForest()"></p-button>
+  <p-button label="Exactitud del modelo" (onClick)="exactitud()"></p-button> 
+  {{ resultExactitud }}
 </div>
+<br/>
+<div>
+  <p-button label="Matriz de confusion" (onClick)="modelo()"></p-button> 
+  {{ resultModelo }}
+</div>
+
 
 
