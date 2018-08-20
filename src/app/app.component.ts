@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,15 @@ export class AppComponent {
   title = 'Proyecto mineria de datos Random Forest';
   resultExactitud;
   resultModelo;
+
+  modelos = [];
   exactitud() {
     // Consulta el servicio web para obtener la exactitud
     this.findExactitud()
     .subscribe((response: any) => {
       console.log(response);
       this.resultExactitud = response;
+      this.stopLoading();
     });
   }
 
@@ -24,7 +28,8 @@ export class AppComponent {
     this.findModelo()
     .subscribe((response: any) => {
       console.log(response);
-      this.resultModelo = response;
+      this.modelos = response;
+      this.stopLoading();
     });
   }
 
@@ -35,15 +40,30 @@ export class AppComponent {
     return this.http.get(url);
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loadingBar: LoadingBarService) { }
   
   findExactitud() {
+    this.startLoading();
     return this.getQuery('exactitud/');
   }
 
   findModelo() {
+    this.startLoading();
     return this.getQuery('modelo/');
   }
 
   
+  startLoading() {
+      this.loadingBar.start();
+  }
+
+  stopLoading() {
+      this.loadingBar.complete();
+  }
+
+  encerar(){
+    this.resultExactitud ='';
+    this.resultModelo ='';
+    this.modelos = [];
+  }
 }
